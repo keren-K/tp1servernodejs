@@ -1,0 +1,10 @@
+
+1. journalisation d'un site web (avec deux routes :home et help sur un serveur node.js), sur un fichier.log à chaque visite du client 
+  faut d'abord:
+- installer le serveur node js avec la commande yum install -y nodejs
+- Créez un dossier pour votre projet.
+- Ouvrez une console (terminal) et naviguez jusqu'au dossier.
+- Initialisez votre projet Node.js en utilisant la commande avec npm init -y
+- Installez les modules express pour le serveur web et fs pour gérer les fichiers:npm install express fs
+- Configuration du serveur avec Express :
+- Créez un fichier server.js (ou tout autre nom que vous préférez) et configurez votre serveur Express avec les routes home et help.
