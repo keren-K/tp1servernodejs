@@ -1,0 +1,163 @@
+
+1. sudo npm install -g @angular/cli
+2. ng version
+3. mkdir my-angular-app
+ng new my-angular-app
+cd my-angular-app
+4. ng generate component home
+ng generate component help
+5.nano app-routing.module.ts
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { HomeComponent } from './home/home.component';
+import { HelpComponent } from './help/help.component';
+
+const routes: Routes = [
+  { path: '', component: HomeComponent },
+  { path: 'help', component: HelpComponent }
+];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }
+
+6. nano home.component.html
+<h1>Welcome to the Home Page!</h1>
+nano help.component.html
+<h1>Welcome to the Help Page!</h1>
+
+7. mkdir backend
+cd backend
+npm init -y
+npm install express body-parser
+
+8.nano angular-server.js
+const express = require('express');
+const fs = require('fs');
+const path = require('path');
+const bodyParser = require('body-parser');
+
+const app = express();
+const port = 3001;
+
+app.use(bodyParser.json());
+
+
+// Middleware pour journaliser les visites
+app.use((req, res, next) => {
+  const log = ${new Date().toISOString()} - ${req.method} ${req.url}\n;
+  fs.appendFile(path.join(__dirname, 'visits.log'), log, (err) => {
+    if (err) {
+      console.error('Failed to write log:', err);
+    }
+  });
+  next();
+});
+
+// Endpoint pour recevoir les visites des routes Angular
+app.post('/log', (req, res) => {
+  const log = ${new Date().toISOString()} - ${req.body.route}\n;
+  fs.appendFile(path.join(__dirname, 'visits.log'), log, (err) => {
+    if (err) {
+      console.error('Failed to write log:', err);
+      res.status(500).send('Failed to write log');
+    } else {
+      res.status(200).send('Log written');
+    }
+  });
+});
+
+app.listen(port, () => {
+  console.log(Server running at http://localhost:${port}/);
+});
+
+9.ng generate service log
+nano log.service.ts 
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../environments/environment';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class LogService {
+  private apiUrl = 'http://localhost:3001/log';
+
+  constructor(private http: HttpClient) { }
+
+  logRoute(route: string) {
+    return this.http.post(this.apiUrl, { route }).subscribe();
+  }
+}
+10.nano home.component.ts
+import { Component, OnInit } from '@angular/core';
+import { LogService } from '../log.service';
+
+@Component({
+  selector: 'app-home',
+  templateUrl: './home.component.html',
+  styleUrls: ['./home.component.css']
+})
+export class HomeComponent implements OnInit {
+  constructor(private logService: LogService) { }
+
+  ngOnInit(): void {
+    this.logService.logRoute('Home Page');
+  }
+}
+
+nano help.component.ts 
+import { Component, OnInit } from '@angular/core';
+import { LogService } from '../log.service';
+
+@Component({
+  selector: 'app-help',
+  templateUrl: './help.component.html',
+  styleUrls: ['./help.component.css']
+})
+export class HelpComponent implements OnInit {
+  constructor(private logService: LogService) { }
+
+  ngOnInit(): void {
+    this.logService.logRoute('Help Page');
+  }
+}
+
+11.nano app.module.ts
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { HomeComponent } from './home/home.component';
+import { HelpComponent } from './help/help.component';
+import { HttpClientModule } from '@angular/common/http';
+
+@NgModule({
+  declarations: [
+    AppComponent,
+    HomeComponent,
+    HelpComponent
+  ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+
+12. npm install winston
+13.node angular-server.js &
+14.node angular-server.js 
+
+
+
+
+
+
+
+
