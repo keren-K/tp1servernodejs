@@ -1,6 +1,9 @@
 
 1. sudo npm install -g @angular/cli
 2. ng version
+
+a. Installation de nvm 
+
 3. mkdir my-angular-app
 ng new my-angular-app
 cd my-angular-app
@@ -151,10 +154,9 @@ import { HttpClientModule } from '@angular/common/http';
 export class AppModule { }
 
 12. npm install winston
-13.node angular-server.js &
-14.node angular-server.js 
-
-
+13.a.node angular-server.js &
+b.node angular-server.js 
+14.ng serve --host 0.0.0.0 --port 4200
 
 
 

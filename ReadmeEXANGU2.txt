@@ -5,7 +5,16 @@
 # Resolution
 1. l'on  installe Angular CLI en utilisant npm. utiliser sudo pour les permissions administratives :
 2.vérifiez que Angular CLI est installé correctement 
-
+a.curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.4/install.sh | bash
+charger nvm
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+installer la version souhaité
+nvm install 18
+utiliser la version installer
+nvm use 18
+verifier la mis à jour
+node -v
 3. Créer un projet Angular:
 
 4. Générer deux composants pour les routes :
@@ -32,5 +41,6 @@ npm install express body-parser
 
 13 Lancer le backend et le frontend
  a. Lancer le backend :
+14.pour lancer le serveur
 
 b.Lancer le frontend :
